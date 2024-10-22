@@ -178,6 +178,34 @@ class MainService {
     }
   }
 
+  Future<List<OrganizationItem>> getOrganizationsclone() async {
+    await confirmValidToken();
+    final List<OrganizationItem> _items = [];
+    try {
+      final http.Response response = await http.get(
+        Uri.parse(Settings.organizationUrl),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final parsed = json.decode(response.body) as Map<String, dynamic>;
+        final items = parsed['data'] as List;
+        for (final item in items) {
+          _items.add(OrganizationItem.fromJson(item as Map<String, dynamic>));
+        }
+        return _items;
+      } else {
+        String _errorString = '${response.statusCode}: ${response.body}';
+        throw _errorString;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future getStudentsclone() async {
     await confirmValidToken();
 

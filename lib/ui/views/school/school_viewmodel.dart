@@ -16,14 +16,13 @@ class SchoolViewModel extends BaseViewModel {
 
   bool isLoading = false;
 
-  final List<OrganizationItem> schools = [];
+  List<OrganizationItem> schools = [];
 
   Future<void> initialize() async {
     log('***** START SCHOOL VIEW MODEL');
     try {
-      final List<OrganizationItem> _schools =
-          await _mainService.getOrganizations();
-      schools.addAll(_schools);
+      final schoolsres = await _mainService.getOrganizations();
+      schools.addAll(schoolsres);
       notifyListeners();
     } catch (e) {
       log('***** ERROR GETTING SCHOOLS: $e');

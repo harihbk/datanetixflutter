@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pos/services/main_service.dart';
 import 'package:pos/statemanagement/globalstore.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../../app/app.locator.dart';
 import '/themes/main_theme.dart';
 import '../../components/header.dart';
 import '../../components/status_bar_date.dart';
@@ -64,8 +66,21 @@ class SchoolSearch extends StatefulWidget {
 
 // hari did
 class _SchoolSearchState extends State<SchoolSearch> {
+  // final _mainService = locator<MainService>();
+
   final GlobalStoreController cartController =
       Get.find<GlobalStoreController>();
+
+  @override
+  void initState() {
+    super.initState();
+    //  getOrganization();
+  }
+
+  // Future getOrganization() async {
+  //   final data = await _mainService.getOrganizations();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
