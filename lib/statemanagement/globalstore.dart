@@ -17,6 +17,7 @@ class GlobalStoreController extends GetxController {
   var selectStudent = <StudentItem>{}.obs;
   var menuselectedvar = <CategoryItem>{}.obs;
   var currentSchool = <OrganizationItem>{}.obs;
+  var categorymenu = <CategoryItem>[].obs;
   var cartobx = <dynamic>[].obs;
   var preorder = false.obs;
   var carttotal = <String, dynamic>{
@@ -113,5 +114,10 @@ class GlobalStoreController extends GetxController {
   onSearch(value) {
     onKeyboardEnter.value = value;
     update();
+  }
+
+  storeCategorygetx(List<CategoryItem> data) {
+    categorymenu.clear();
+    categorymenu.addAll(data);
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:pos/models/organization_item.dart';
+import 'package:pos/statemanagement/globalstore.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -8,11 +9,15 @@ import '../../../services/main_service.dart';
 import '/app/app.router.dart';
 import '/app/app.dialogs.dart';
 import '/app/app.locator.dart';
+import 'package:get/get.dart';
 
 class SchoolViewModel extends BaseViewModel {
   final _dialogService = locator<DialogService>();
   final _navigationService = locator<NavigationService>();
   final _mainService = locator<MainService>();
+
+  final GlobalStoreController cartController =
+      Get.find<GlobalStoreController>();
 
   bool isLoading = false;
 
@@ -42,12 +47,19 @@ class SchoolViewModel extends BaseViewModel {
     );
     if (result != null && result.confirmed) {
       isLoading = true;
+      cartController.currentSchoolobx(school);
       notifyListeners();
       _mainService.currentSchool = school;
       try {
         // await _mainService.getStudents();
         // await _mainService.getMenu();
-        // await _mainService.getCategories(); // ths is menu tabbar
+        //  await _mainService.getMenu();
+        final response = await _mainService.getCategories();
+        print('----mm----');
+        print(response);
+        print('----mm----');
+        cartController.storeCategorygetx(response);
+        navigateToHome();
       } catch (e) {
         await _dialogService.showCustomDialog(
           variant: DialogType.error,
@@ -55,7 +67,6 @@ class SchoolViewModel extends BaseViewModel {
           description: 'Error getting school data: $e',
         );
       }
-      navigateToHome();
     }
   }
 

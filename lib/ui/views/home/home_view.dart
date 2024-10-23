@@ -164,20 +164,24 @@ class _MenuCategoriesState extends State<MenuCategories> {
   final GlobalStoreController cartController =
       Get.find<GlobalStoreController>();
 
-  List tabs = [];
+  List<CategoryItem> tabs = [];
 
   @override
   initState() {
     super.initState();
-    getCategoryh();
-  }
-
-  Future getCategoryh() async {
-    final menu = await _mainService.getCategories();
+    // getCategoryh();
+    List<CategoryItem> dd = cartController.categorymenu.value;
     setState(() {
-      tabs = menu;
+      tabs = dd as List<CategoryItem>;
     });
   }
+
+  // Future getCategoryh() async {
+  //   final menu = await _mainService.getCategories();
+  //   setState(() {
+  //     tabs = menu;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

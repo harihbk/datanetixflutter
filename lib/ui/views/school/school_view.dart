@@ -8,7 +8,7 @@ import '/themes/main_theme.dart';
 import '../../components/header.dart';
 import '../../components/status_bar_date.dart';
 import 'school_viewmodel.dart';
-import 'package:get/get.dart';
+// import 'package:get/get.dart';
 
 class SchoolView extends StackedView<SchoolViewModel> {
   const SchoolView({Key? key}) : super(key: key);
@@ -68,8 +68,8 @@ class SchoolSearch extends StatefulWidget {
 class _SchoolSearchState extends State<SchoolSearch> {
   // final _mainService = locator<MainService>();
 
-  final GlobalStoreController cartController =
-      Get.find<GlobalStoreController>();
+  // final GlobalStoreController cartController =
+  //     Get.find<GlobalStoreController>();
 
   @override
   void initState() {
@@ -98,8 +98,6 @@ class _SchoolSearchState extends State<SchoolSearch> {
                     borderRadius: BorderRadius.circular(12.0)),
                 child: ListTile(
                   onTap: () {
-                    cartController
-                        .currentSchoolobx(widget.model.schools[index]);
                     widget.model.confirmSchool(widget.model.schools[index]);
                   },
                   leading: ClipRRect(
