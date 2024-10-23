@@ -70,74 +70,76 @@ class SquareService {
 
   Future<void> initializeReader() async {
     await confirmValidToken();
-    // print('***** INITIALIZE READER');
-    // try {
-    //   await ReaderSdk.authorize(_authToken!);
-    //   await ReaderSdk.startReaderSettings();
-    //   _isReaderAuthorized = true;
-    // } on ReaderSdkException catch (e) {
-    //   switch (e.code) {
-    //     case ErrorCode.authorizeErrorNoNetwork:
-    //       log('***** READER AUTHORIZE ERROR NO NETWORK');
-    //       break;
-    //     case ErrorCode.usageError:
-    //       log('***** READER AUTHORIZE ERROR: ${e.code}:${e.debugCode}:${e.debugMessage}');
-    //       break;
-    //     case ErrorCode.readerSettingsErrorSdkNotAuthorized:
-    //       log('***** READER AUTHORIZE ERROR SDK NOT AUTHORIZED');
-    //       break;
-    //     default:
-    //       log('***** READER AUTHORIZE ERROR: ${e.code}:${e.debugCode}:${e.debugMessage}');
-    //   }
-    // } catch (e) {
-    //   log('***** READER AUTHORIZE ERROR: ${e.toString()}');
-    // }
+    print('***** INITIALIZE READER ${_authToken}');
+    try {
+      await ReaderSdk.authorize(_authToken!);
+      await ReaderSdk.startReaderSettings();
+      _isReaderAuthorized = true;
+    } on ReaderSdkException catch (e) {
+      switch (e.code) {
+        case ErrorCode.authorizeErrorNoNetwork:
+          log('***** READER AUTHORIZE ERROR NO NETWORK');
+          break;
+        case ErrorCode.usageError:
+          log('***** READER AUTHORIZE ERROR: ${e.code}:${e.debugCode}:${e.debugMessage}');
+          break;
+        case ErrorCode.readerSettingsErrorSdkNotAuthorized:
+          log('***** READER AUTHORIZE ERROR SDK NOT AUTHORIZED');
+          break;
+        default:
+          log('***** READER AUTHORIZE ERROR: ${e.code}:${e.debugCode}:${e.debugMessage}');
+      }
+    } catch (e) {
+      log('***** READER AUTHORIZE ERROR: ${e.toString()}');
+    }
   }
 
   Future<Object> charge(
       {required int amount, required String transactionText}) async {
-    return "123";
-    // CheckoutParametersBuilder builder = CheckoutParametersBuilder();
+    CheckoutParametersBuilder builder = CheckoutParametersBuilder();
+    print('***** CHARGE START');
+    print('***** CHARGE AMOUNT: $amount');
+    print('***** CHARGE TRANSACTION TEXT: $transactionText');
+    builder.amountMoney = MoneyBuilder()
+      ..amount = amount
+      ..currencyCode = 'USD';
+    builder.skipReceipt = true;
+    builder.collectSignature = false;
+    builder.allowSplitTender = false;
+    builder.delayCapture = false;
+    builder.note = transactionText;
 
-    // builder.amountMoney = MoneyBuilder()
-    //   ..amount = amount
-    //   ..currencyCode = 'USD';
-    // builder.skipReceipt = true;
-    // builder.collectSignature = false;
-    // builder.allowSplitTender = false;
-    // builder.delayCapture = false;
-    // builder.note = transactionText;
+    CheckoutParameters checkoutParameters = builder.build();
 
-    // CheckoutParameters checkoutParameters = builder.build();
-
-    // try {
-    //   CheckoutResult checkoutResult = await ReaderSdk.startCheckout(checkoutParameters);
-    //   Object result = {
-    //     'transactionId': checkoutResult.transactionId,
-    //     'transactionClientID': checkoutResult.transactionClientId,
-    //     'transactionLocationID': checkoutResult.locationId,
-    //     'createdAt': checkoutResult.createdAt,
-    //     'tenderId': checkoutResult.tenders[0].tenderId,
-    //     'totalMoney': {
-    //       'amount': checkoutResult.totalMoney.amount,
-    //       'currencyCode': checkoutResult.totalMoney.currencyCode,
-    //     },
-    //     'cardDetails': {
-    //       'type': checkoutResult.tenders[0].cardDetails!.card.brand.toString(),
-    //       'lastFourDigits': checkoutResult.tenders[0].cardDetails!.card.lastFourDigits,
-    //     },
-    //   };
-    //   return result;
-    // } on ReaderSdkException catch (e) {
-    //   switch (e.code) {
-    //     case ErrorCode.checkoutErrorCanceled:
-    //       throw Exception('Checkout canceled');
-    //     case ErrorCode.checkoutErrorSdkNotAuthorized:
-    //       throw Exception('Reader SDK not authorized');
-    //     default:
-    //       throw Exception('${e.code}:${e.debugCode}:${e.debugMessage}');
-    //   }
-
-    // }
+    try {
+      CheckoutResult checkoutResult =
+          await ReaderSdk.startCheckout(checkoutParameters);
+      Object result = {
+        'transactionId': checkoutResult.transactionId,
+        'transactionClientID': checkoutResult.transactionClientId,
+        'transactionLocationID': checkoutResult.locationId,
+        'createdAt': checkoutResult.createdAt,
+        'tenderId': checkoutResult.tenders[0].tenderId,
+        'totalMoney': {
+          'amount': checkoutResult.totalMoney.amount,
+          'currencyCode': checkoutResult.totalMoney.currencyCode,
+        },
+        'cardDetails': {
+          'type': checkoutResult.tenders[0].cardDetails!.card.brand.toString(),
+          'lastFourDigits':
+              checkoutResult.tenders[0].cardDetails!.card.lastFourDigits,
+        },
+      };
+      return result;
+    } on ReaderSdkException catch (e) {
+      switch (e.code) {
+        case ErrorCode.checkoutErrorCanceled:
+          throw Exception('Checkout canceled');
+        case ErrorCode.checkoutErrorSdkNotAuthorized:
+          throw Exception('Reader SDK not authorized');
+        default:
+          throw Exception('${e.code}:${e.debugCode}:${e.debugMessage}');
+      }
+    }
   }
 }

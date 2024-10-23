@@ -172,64 +172,67 @@ class _MenuCategoriesState extends State<MenuCategories> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: tabs.isEmpty
-          ? Row(
-              children:
-                  List.generate(3, (index) => buildSkeleton(widget.height)))
-          : Row(
-              children: [
-                for (CategoryItem cat in tabs)
-                  Row(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            tabs.forEach((user) {
-                              user.selected = false; // Increment the age by 1
-                            });
-                            var t =
-                                tabs.firstWhere((user) => user.id == cat.id);
-                            t.selected = true;
-                            cartController.menuselected(t);
-                          });
-                        },
-                        child: Container(
-                          height: widget.height,
-                          width: 170.0,
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: cat.selected
-                                    ? Colors.black
-                                    : Colors.transparent,
-                                width: 2.0,
-                              ),
-                            ),
-                          ),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Center(
-                              child: Text(
-                                cat.name,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: cat.selected
-                                      ? FontWeight.bold
-                                      : FontWeight.normal,
-                                  fontSize: 17.0,
+      child: cartController.selectStudent.isEmpty
+          ? Center(child: Text("Select student"))
+          : tabs.isEmpty
+              ? Row(
+                  children:
+                      List.generate(3, (index) => buildSkeleton(widget.height)))
+              : Row(
+                  children: [
+                    for (CategoryItem cat in tabs)
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                tabs.forEach((user) {
+                                  user.selected =
+                                      false; // Increment the age by 1
+                                });
+                                var t = tabs
+                                    .firstWhere((user) => user.id == cat.id);
+                                t.selected = true;
+                                cartController.menuselected(t);
+                              });
+                            },
+                            child: Container(
+                              height: widget.height,
+                              width: 170.0,
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: cat.selected
+                                        ? Colors.black
+                                        : Colors.transparent,
+                                    width: 2.0,
+                                  ),
                                 ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                              ),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Center(
+                                  child: Text(
+                                    cat.name,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: cat.selected
+                                          ? FontWeight.bold
+                                          : FontWeight.normal,
+                                      fontSize: 17.0,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-              ],
-            ),
+                  ],
+                ),
     );
   }
 }
@@ -675,8 +678,17 @@ class _CartState extends State<Cart> {
       result = 'Preorder';
     }
 
-    Object body = {
-      'cart': cartController.carttotal.toJson(),
+    final body = {
+      'cart': {
+        "studentId": cartController.selectStudent.first.id,
+        "organizationId": cartController.currentSchool.first.id,
+        "studentGivenName": cartController.selectStudent.first.displayName,
+        "studentFamilyName": cartController.selectStudent.first.familyName,
+        "items": cartController.cartobx.toJson(),
+        "total": cartController.carttotal['total'],
+        "date": DateTime.now().toIso8601String(),
+        "discount": cartController.carttotal['discount']
+      },
       'charge': charge,
       'result': result,
       'preorderId': cartController.selectStudent.first.preorder.isNotEmpty
@@ -685,18 +697,19 @@ class _CartState extends State<Cart> {
     };
     print('***** PAY BODY: ${jsonEncode(body)}');
     try {
-      final double newBalance =
-          await _mainService.transaction(body: jsonEncode(body));
-      if (!charge) {
-        await _mainService.updateStudentBalance(
-            studentId: cartController.selectStudent.first.id,
-            amount: newBalance);
-      }
-      // await _dialogService.showCustomDialog(
-      //   variant: DialogType.infoAlert,
-      //   title: 'Transaction Complete',
-      //   description: 'Transaction for ${cart!.studentGivenName.trim()} ${cart!.studentFamilyName.trim()} was successful.',
-      // );
+      // final double newBalance =
+      //     await _mainService.transaction(body: jsonEncode(body));
+      // if (!charge) {
+      //   await _mainService.updateStudentBalance(
+      //       studentId: cartController.selectStudent.first.id,
+      //       amount: newBalance);
+      // }
+      await _dialogService.showCustomDialog(
+        variant: DialogType.infoAlert,
+        title: 'Transaction Complete',
+        description:
+            'Transaction for ${cartController.selectStudent.first.displayName.trim()} ${cartController.selectStudent.first.familyName.trim()} was successful.',
+      );
     } catch (e) {
       // TODO: charge was made, but transaction failed to save to server.
       await _dialogService.showCustomDialog(
