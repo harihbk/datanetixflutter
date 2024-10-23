@@ -18,6 +18,7 @@ class GlobalStoreController extends GetxController {
   var menuselectedvar = <CategoryItem>{}.obs;
   var currentSchool = <OrganizationItem>{}.obs;
   var cartobx = <dynamic>[].obs;
+  var preorder = false.obs;
   var carttotal = <String, dynamic>{
     "total": 0.00,
     "discount": 0.00,
@@ -35,6 +36,8 @@ class GlobalStoreController extends GetxController {
   selectStudentfn(StudentItem student) async {
     selectStudent.clear();
     selectStudent.add(student);
+    carttotal['balance'] = student.balance;
+    update();
 
     return true;
   }
@@ -44,7 +47,7 @@ class GlobalStoreController extends GetxController {
     carttotal['total'] = 0.00;
     carttotal['discount'] = 0.00;
     carttotal['calculatedTotal'] = 0.00;
-    carttotal['balance'] = 0.00;
+    carttotal['balance'] = selectStudent.first.balance;
   }
 
   Set<StudentItem> convertSelectStudentToNormalSet() {

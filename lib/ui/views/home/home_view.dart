@@ -62,44 +62,55 @@ class _HomeViewState extends State<HomeView> {
             ),
             Row(
               children: [
-                Column(
-                  children: [
-                    SizedBox(
-                      height: _searchHeight,
-                      width: MediaQuery.of(context).size.width * 0.75,
-                      child: Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: const MenuSearch(),
-                      ),
-                    ),
-                    SizedBox(
-                      height: _categoriesHeight,
-                      width: MediaQuery.of(context).size.width * 0.75,
-                      child: const MenuCategories(height: _categoriesHeight),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height -
-                          Settings.headerHeight -
-                          _categoriesHeight -
-                          _searchHeight,
-                      width: MediaQuery.of(context).size.width * 0.75,
-                      child: const MenuView(),
-                    ),
-                  ],
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height -
-                      Settings.headerHeight,
-                  color: Colors.grey[300],
-                  width: MediaQuery.of(context).size.width * 0.25,
+                Expanded(
+                  flex: 3,
                   child: Column(
                     children: [
-                      Obx(() {
-                        if (cartController.selectStudent.isEmpty) {
-                          return const NoStudentSelected();
-                        }
-                        return const StudentTransactions();
-                      }),
+                      SizedBox(
+                        height: _searchHeight,
+                        width: MediaQuery.of(context).size.width * 0.75,
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: const MenuSearch(),
+                        ),
+                      ),
+                      SizedBox(
+                        height: _categoriesHeight,
+                        width: MediaQuery.of(context).size.width * 0.75,
+                        child: const MenuCategories(height: _categoriesHeight),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height -
+                            Settings.headerHeight -
+                            _categoriesHeight -
+                            _searchHeight,
+                        width: MediaQuery.of(context).size.width * 0.75,
+                        child: const MenuView(),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    children: [
+                      Container(
+                        // height: double.infinity,
+                        height: MediaQuery.of(context).size.height -
+                            Settings.headerHeight,
+                        color: Colors.grey[300],
+                        // width: MediaQuery.of(context).size.width * 0.25,
+                        child: Column(
+                          children: [
+                            Obx(() {
+                              if (cartController.selectStudent.isEmpty) {
+                                return const NoStudentSelected();
+                              }
+                              return const StudentTransactions();
+                            }),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -172,67 +183,64 @@ class _MenuCategoriesState extends State<MenuCategories> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: cartController.selectStudent.isEmpty
-          ? Center(child: Text("Select student"))
-          : tabs.isEmpty
-              ? Row(
-                  children:
-                      List.generate(3, (index) => buildSkeleton(widget.height)))
-              : Row(
-                  children: [
-                    for (CategoryItem cat in tabs)
-                      Row(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                tabs.forEach((user) {
-                                  user.selected =
-                                      false; // Increment the age by 1
-                                });
-                                var t = tabs
-                                    .firstWhere((user) => user.id == cat.id);
-                                t.selected = true;
-                                cartController.menuselected(t);
-                              });
-                            },
-                            child: Container(
-                              height: widget.height,
-                              width: 170.0,
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: cat.selected
-                                        ? Colors.black
-                                        : Colors.transparent,
-                                    width: 2.0,
-                                  ),
-                                ),
-                              ),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Center(
-                                  child: Text(
-                                    cat.name,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: cat.selected
-                                          ? FontWeight.bold
-                                          : FontWeight.normal,
-                                      fontSize: 17.0,
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
+      child: tabs.isEmpty
+          ? Row(
+              children:
+                  List.generate(3, (index) => buildSkeleton(widget.height)))
+          : Row(
+              children: [
+                for (CategoryItem cat in tabs)
+                  Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            tabs.forEach((user) {
+                              user.selected = false; // Increment the age by 1
+                            });
+                            var t =
+                                tabs.firstWhere((user) => user.id == cat.id);
+                            t.selected = true;
+                            cartController.menuselected(t);
+                          });
+                        },
+                        child: Container(
+                          height: widget.height,
+                          width: 170.0,
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: cat.selected
+                                    ? Colors.black
+                                    : Colors.transparent,
+                                width: 2.0,
                               ),
                             ),
                           ),
-                        ],
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Center(
+                              child: Text(
+                                cat.name,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: cat.selected
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
+                                  fontSize: 17.0,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                  ],
-                ),
+                    ],
+                  ),
+              ],
+            ),
     );
   }
 }
@@ -345,28 +353,28 @@ class _MenuViewState extends State<MenuView> {
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading
-        ? ProductSkeleton()
-        : Padding(
-            padding:
-                const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
-            child: GridView.builder(
-              itemCount: products.length,
-              itemBuilder: (context, index) {
-                if (index < 0 || index >= filteredProducts.length) {
-                  return const SizedBox
-                      .shrink(); // Return an empty widget if out of bounds
-                }
-                return MenuTile(model: filteredProducts[index], index: index);
-              },
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                crossAxisSpacing: 5.0,
-                mainAxisSpacing: 5.0,
-                childAspectRatio: 0.60,
-              ),
-            ),
-          );
+    return Padding(
+        padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
+        child: Obx(() {
+          return (cartController.selectStudent.isNotEmpty
+              ? GridView.builder(
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    if (index < 0 || index >= filteredProducts.length) {
+                      return const SizedBox.shrink();
+                    }
+                    return MenuTile(
+                        model: filteredProducts[index], index: index);
+                  },
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 5.0,
+                    mainAxisSpacing: 5.0,
+                    childAspectRatio: 0.60,
+                  ),
+                )
+              : Center(child: Text("Please Select a Student to Continue")));
+        }));
   }
 }
 
@@ -484,7 +492,6 @@ class _StudentTransactionsState extends State<StudentTransactions> {
       Get.find<GlobalStoreController>();
 
   @override
-  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
@@ -543,11 +550,14 @@ class _StudentTransactionsState extends State<StudentTransactions> {
             ),
             const SizedBox(height: 5),
             Text(
-              'Balance: \$${student.balance.toStringAsFixed(2)}',
+              'Balance: \$${cartController.carttotal['balance'].toStringAsFixed(2)}',
+              // 'Balance: \$${student.balance.toStringAsFixed(2)}',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: (student.balance < 0.01) ? Colors.red : Colors.green,
+                color: (cartController.carttotal['balance'] < 0.01)
+                    ? Colors.red
+                    : Colors.green,
               ),
               textAlign: TextAlign.center,
               maxLines: 2,
@@ -592,7 +602,8 @@ class _StudentTransactionsState extends State<StudentTransactions> {
               ],
             ),
             const Divider(color: Colors.white),
-            cartController.cartobx.isNotEmpty ? Cart() : Container()
+            Cart()
+            // cartController.cartobx.isNotEmpty ? Cart() : Container()
           ],
         );
       }),
@@ -616,10 +627,16 @@ class _CartState extends State<Cart> {
 
   final GlobalStoreController cartController =
       Get.find<GlobalStoreController>();
+  dynamic fromcartObx = [];
+  Set<StudentItem> studentsSet = {};
+  dynamic totaldiscountobx = {};
 
   @override
   void initState() {
     super.initState();
+    // fromcartObx = cartController.cartobx.toList();
+    // studentsSet = cartController.convertSelectStudentToNormalSet();
+    // totaldiscountobx = cartController.carttotal;
   }
 
   pay({required bool charge}) async {
@@ -734,12 +751,19 @@ class _CartState extends State<Cart> {
         mainAxisSize: MainAxisSize.max,
         children: [
           fromcartObx.isEmpty
-              ? Expanded(
-                  child: Text(
-                  'No Items',
-                  style: TextStyle(fontSize: 14, color: Colors.grey.shade800),
-                  textAlign: TextAlign.center,
-                ))
+              ? Column(
+                  children: [
+                    Text(
+                      'No Items',
+                      style:
+                          TextStyle(fontSize: 14, color: Colors.grey.shade800),
+                      textAlign: TextAlign.center,
+                    ),
+                    Container(
+                      height: 280,
+                    )
+                  ],
+                )
               : Container(
                   height: 300,
                   child: ListView.builder(

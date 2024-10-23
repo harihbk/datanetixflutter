@@ -179,13 +179,13 @@ class _StudentSearchState extends State<StudentSearch> {
                                       )
                                     : const Icon(
                                         Icons.person,
-                                        size: 30.0,
-                                        color: Color.fromARGB(255, 6, 78, 137),
+                                        size: 50.0,
+                                        color: Colors.grey,
                                       ),
                               ),
                             ),
                           ),
-                          subtitle: Column(
+                          title: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               !student.hasParent
@@ -194,7 +194,7 @@ class _StudentSearchState extends State<StudentSearch> {
                                       style: TextStyle(
                                         color: Colors.red,
                                         fontSize: 18.0,
-                                        fontWeight: FontWeight.bold,
+                                        fontWeight: FontWeight.normal,
                                       ),
                                     )
                                   : const SizedBox(),
@@ -206,13 +206,14 @@ class _StudentSearchState extends State<StudentSearch> {
                               ),
                             ],
                           ),
-                          title: Text(
+                          subtitle: Text(
                             '${student.givenName} ${student.familyName} ${student.grade}',
                             style: Theme.of(context).textTheme.titleLarge,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                           trailing: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
                                 student.role.toUpperCase(),
