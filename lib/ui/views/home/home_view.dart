@@ -602,7 +602,11 @@ class _StudentTransactionsState extends State<StudentTransactions> {
               ],
             ),
             const Divider(color: Colors.white),
-            Cart()
+            // Cart()
+            Container(
+              width: double.infinity,
+              child: Cart(),
+            )
             // cartController.cartobx.isNotEmpty ? Cart() : Container()
           ],
         );
@@ -751,21 +755,16 @@ class _CartState extends State<Cart> {
         mainAxisSize: MainAxisSize.max,
         children: [
           fromcartObx.isEmpty
-              ? Column(
-                  children: [
-                    Text(
-                      'No Items',
-                      style:
-                          TextStyle(fontSize: 14, color: Colors.grey.shade800),
-                      textAlign: TextAlign.center,
-                    ),
-                    Container(
-                      height: 280,
-                    )
-                  ],
+              ? Container(
+                  child: Text(
+                    'No Items',
+                    style: TextStyle(fontSize: 14, color: Colors.grey.shade800),
+                    textAlign: TextAlign.center,
+                  ),
+                  height: MediaQuery.of(context).size.height * 0.3,
                 )
               : Container(
-                  height: 300,
+                  height: MediaQuery.of(context).size.height * 0.3,
                   child: ListView.builder(
                     itemCount: fromcartObx.length,
                     itemBuilder: (context, index) => InkWell(

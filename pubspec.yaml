@@ -45,7 +45,8 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_native_splash: ^2.4.0
   shimmer: ^3.0.0
-  square_reader_sdk: ^4.0.1
+  square_reader_sdk: ^4.0.0
+  flutter_offline: ^3.0.0
  
 
 dev_dependencies:

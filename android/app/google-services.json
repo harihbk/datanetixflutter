@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "794587233303",
+    "project_id": "sapphire-eat-school-pos",
+    "storage_bucket": "sapphire-eat-school-pos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794587233303:android:e77e1234109b9b57c6f052",
+        "android_client_info": {
+          "package_name": "com.sapphireatschool.pos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "794587233303-lfa5h62gj9e46vljtnfocgpbf376di1s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8hNpxPvJxh8q522f2LqD_8ze71n57It4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "794587233303-lfa5h62gj9e46vljtnfocgpbf376di1s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

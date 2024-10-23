@@ -1,15 +1,14 @@
-plugins {
-    id "com.android.application"
-    id "kotlin-android"
-    id "dev.flutter.flutter-gradle-plugin"
-}
-
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader('UTF-8') { reader ->
         localProperties.load(reader)
     }
+}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
@@ -22,10 +21,18 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+apply plugin: 'com.android.application'
+// START: FlutterFire Configuration
+apply plugin: 'com.google.gms.google-services'
+// END: FlutterFire Configuration
+apply plugin: 'kotlin-android'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
 android {
-    namespace "com.example.pos"
-    compileSdk flutter.compileSdkVersion
-    ndkVersion flutter.ndkVersion
+    namespace "com.sapphireatschool.pos"
+
+    compileSdkVersion flutter.compileSdkVersion
+    ndkVersion = "21.4.7075529"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -42,14 +49,27 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.pos"
+        applicationId "com.sapphireatschool.pos"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion 31
-        targetSdkVersion flutter.targetSdkVersion
+        targetSdkVersion 33
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        multiDexEnabled true
+    }
+
+    packagingOptions {
+        exclude("META-INF/*.kotlin_module")
+    }
+
+    dexOptions {
+        // Ensures incremental builds remain fast
+        preDexLibraries true
+        // Required to build with Reader SDK
+        jumboMode true
+        // Required to build with Reader SDK
+        keepRuntimeAnnotatedClasses false
     }
 
     buildTypes {
@@ -66,8 +86,9 @@ flutter {
 }
 
 dependencies {
-    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     def readerSdkVersion = "1.7.4"
     implementation "com.squareup.sdk.reader:reader-sdk-$SQUARE_READER_SDK_APPLICATION_ID:$readerSdkVersion"
     runtimeOnly "com.squareup.sdk.reader:reader-sdk-internals:$readerSdkVersion"
+
 }

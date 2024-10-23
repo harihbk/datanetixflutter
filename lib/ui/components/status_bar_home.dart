@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:pos/app/app.router.dart';
 import 'package:pos/ui/views/school/studentsearch.dart';
+import 'package:square_reader_sdk/reader_sdk.dart';
 // import 'package:square_reader_sdk/reader_sdk.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -34,11 +35,11 @@ class _StatusBarHomeState extends State<StatusBarHome> {
   }
 
   Future<void> checkAuth() async {
-    // var isAuthorized = await ReaderSdk.isAuthorized;
-    // print('***** CHECK AUTH: $isAuthorized');
-    // setState(() {
-    //   readerIsAuthorized = isAuthorized;
-    // });
+    var isAuthorized = await ReaderSdk.isAuthorized;
+    print('***** CHECK AUTH: $isAuthorized');
+    setState(() {
+      readerIsAuthorized = isAuthorized;
+    });
   }
 
   @override
