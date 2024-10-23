@@ -647,8 +647,14 @@ class _CartState extends State<Cart> {
     // totaldiscountobx = cartController.carttotal;
   }
 
-  pay({required bool charge}) async {
-    if (cartController.carttotal['total'] == 0.0) {
+  pay(
+      {required bool charge,
+      required GlobalStoreController cartControllerclone}) async {
+    print('------tttt------');
+    print(cartControllerclone.cartobx.length);
+    print('------tttt------');
+    if (cartControllerclone.cartobx.isEmpty) {
+      // if (cartController.carttotal['total'] == 0.00) {
       await _dialogService.showCustomDialog(
         variant: DialogType.infoAlert,
         title: 'Cart Empty',
@@ -754,6 +760,7 @@ class _CartState extends State<Cart> {
           cartController.convertSelectStudentToNormalSet();
 
       final totaldiscountobx = cartController.carttotal;
+      final _cartController = cartController;
 
       return Column(
         mainAxisSize: MainAxisSize.max,
@@ -836,7 +843,7 @@ class _CartState extends State<Cart> {
           TextButton(
             onPressed: () {
               if (studentsSet.first.preorder.isEmpty) {
-                pay(charge: true);
+                pay(charge: true, cartControllerclone: _cartController);
               }
             },
             style: TextButton.styleFrom(
@@ -861,7 +868,7 @@ class _CartState extends State<Cart> {
           TextButton(
             onPressed: () {
               if (studentsSet.first.preorder == false) {
-                pay(charge: false);
+                pay(charge: false, cartControllerclone: _cartController);
               }
             },
             style: TextButton.styleFrom(

@@ -76,8 +76,10 @@ class GlobalStoreController extends GetxController {
   removeCartItem(dynamic item, int index) {
     cartobx.removeAt(index);
     carttotal['total'] -= item.menuItemPrice;
+
     calculation();
-    return false;
+    update();
+    return true;
   }
 
   calculation() {
