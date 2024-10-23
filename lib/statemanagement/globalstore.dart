@@ -70,20 +70,40 @@ class GlobalStoreController extends GetxController {
       menuItemPrice: item.price,
     ));
     carttotal['total'] = carttotal['total'] + item.price;
+    update();
+    print('--storeaddess--');
+    print(carttotal['total']);
+    print('--storeaddess--');
+
     calculation();
   }
 
   removeCartItem(dynamic item, int index) {
     cartobx.removeAt(index);
-    carttotal['total'] -= item.menuItemPrice;
+    // carttotal['total'] = carttotal['total'] - item.menuItemPrice;
 
+    if (carttotal['total'] >= item.menuItemPrice) {
+      carttotal['total'] -= item.menuItemPrice;
+
+      // Fix floating-point precision by rounding to 2 decimal places
+      carttotal['total'] = double.parse(carttotal['total'].toStringAsFixed(2));
+    } else {
+      carttotal['total'] = 0.00; // Prevent negative total
+    }
+
+    // carttotal['total'] = 0.00; // Prevent negative total
+
+    print('--store--');
+    print(item.menuItemPrice);
+    print(carttotal['total']);
+    print('--store--');
+    update();
     calculation();
     update();
     return true;
   }
 
   calculation() {
-    final calculatedTotal = 3.0;
     carttotal['discount'] = currentSchool.first.facultyDiscount;
 
     if (selectStudent.first.role.toUpperCase() == 'FACULTY') {

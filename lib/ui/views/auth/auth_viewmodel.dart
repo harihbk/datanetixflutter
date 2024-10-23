@@ -18,8 +18,10 @@ class AuthViewModel extends BaseViewModel {
   final _mainService = locator<MainService>();
   final _dialogService = locator<DialogService>();
 
-  // final userController = TextEditingController(text: "laurenr@sapphirellc.com");
+  // final userController =
+  //     TextEditingController(text: "laurenr@a0sapphirellc.com");
   // final passController = TextEditingController(text: "SASportal20!");
+
   final userController = TextEditingController();
   final passController = TextEditingController();
 

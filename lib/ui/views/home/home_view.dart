@@ -651,10 +651,10 @@ class _CartState extends State<Cart> {
       {required bool charge,
       required GlobalStoreController cartControllerclone}) async {
     print('------tttt------');
-    print(cartControllerclone.cartobx.length);
+    print(cartControllerclone.carttotal);
     print('------tttt------');
-    if (cartControllerclone.cartobx.isEmpty) {
-      // if (cartController.carttotal['total'] == 0.00) {
+    // if (cartControllerclone.cartobx.isEmpty) {
+    if (cartController.carttotal['total'] == 0.00) {
       await _dialogService.showCustomDialog(
         variant: DialogType.infoAlert,
         title: 'Cart Empty',
