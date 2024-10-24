@@ -31,6 +31,7 @@ macos
 .pub-cache/
 .pub/
 /build/
+ios/
 
 # Symbolication related
 app.*.symbols
