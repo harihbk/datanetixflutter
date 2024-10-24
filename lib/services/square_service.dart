@@ -21,16 +21,18 @@ class SquareService {
       _headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Accept': 'application/json',
-        'Authorization':
-            'Bearer EAAAEOHuxTzq9UdM8Nt3WDvrJH-N9zz-nz-MuoZDDBNF22GRAdF7kI9RXhD9H5Ag',
+        // 'Authorization': 'Bearer EAAAEOHuxTzq9UdM8Nt3WDvrJH-N9zz-nz-MuoZDDBNF22GRAdF7kI9RXhD9H5Ag', // Production
+        'Authorization': 'Bearer EAAAEFR-xZu2dlK-HxzV9V2ZFP9XIs8A5s8jbU35yjuoJ4tLNi1FEw8yrqj0uapt', // Sandbox
         'Square-Version': '2023-07-20',
       };
       _body = {
-        'location_id': 'D3N6BSXKCGM3A',
+        // 'location_id': 'D3N6BSXKCGM3A', // Production
+        'location_id': 'LWF6AD4YFZCJ5', // Sandbox
       };
 
       final http.Response response = await http.post(
-        Uri.parse('https://connect.squareup.com/mobile/authorization-code'),
+        // Uri.parse('https://connect.squareup.com/mobile/authorization-code'), // Production
+        Uri.parse('https://connect.squareupsandbox.com/mobile/authorization-code'), // Sandbox
         body: _body,
         headers: _headers,
       );

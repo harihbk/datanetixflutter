@@ -193,25 +193,25 @@ class _StudentSearchState extends State<StudentSearch> {
                                       'Student has no parent in the system',
                                       style: TextStyle(
                                         color: Colors.red,
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.normal,
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     )
                                   : const SizedBox(),
-                              Text(
-                                'Issued ID: ${student.issuedId}',
-                                style: Theme.of(context).textTheme.titleMedium,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
-                          ),
-                          subtitle: Text(
+                                  Text(
                             '${student.givenName} ${student.familyName} ${student.grade}',
                             style: Theme.of(context).textTheme.titleLarge,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
+                            ],
+                          ),
+                          subtitle: Text(
+                                'Issued ID: ${student.issuedId}',
+                                style: Theme.of(context).textTheme.titleMedium,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                           trailing: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:pos/services/main_service.dart';
 import 'package:pos/statemanagement/globalstore.dart';
@@ -25,12 +27,12 @@ class SchoolView extends StackedView<SchoolViewModel> {
         children: [
           StatusBarDate(),
           SizedBox(
-            height: 20,
+            height: 50,
           ),
           Image.asset(
             'assets/images/icon.png',
             fit: BoxFit.contain,
-            width: 200,
+            width: 300,
           ),
           SizedBox(height: 30.0),
           Text('Select your School',
@@ -86,49 +88,62 @@ class _SchoolSearchState extends State<SchoolSearch> {
     return Expanded(
       flex: 1,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(left: 100, right: 50, bottom: 20),
         child: ListView.builder(
+            
             itemCount: widget.model.schools?.length,
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                margin: EdgeInsets.only(bottom: 8),
-                padding: EdgeInsets.only(top: 5, bottom: 5),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12.0)),
-                child: ListTile(
-                  onTap: () {
-                    widget.model.confirmSchool(widget.model.schools[index]);
-                  },
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(12.0),
-                    child: (widget.model.schools[index].thumbnail != null)
-                        ? Image.memory(
-                            widget.model.schools[index].thumbnail!,
-                            fit: BoxFit.contain,
-                            width: 60,
-                            height: 60,
-                          )
-                        : SizedBox(
-                            width: 60,
-                            height: 60,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
+              return Column(
+                children: [
+                    Container(
+                  margin: EdgeInsets.only(bottom: 8, left: 12, right: 12),
+                  padding: EdgeInsets.only(top: 5, bottom: 5),
+                  decoration: BoxDecoration(
+                      // color: Colors.white,
+                      borderRadius: BorderRadius.circular(12.0)),
+                  child: ListTile(
+                    onTap: () {
+                      widget.model.confirmSchool(widget.model.schools[index]);
+                    },
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(12.0),
+                      child: (widget.model.schools[index].thumbnail != null)
+                          ? Image.memory(
+                              widget.model.schools[index].thumbnail!,
+                              fit: BoxFit.contain,
+                              width: 60,
+                              height: 60,
+                            )
+                          : SizedBox(
+                              width: 60,
+                              height: 60,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
-                          ),
-                  ),
-                  title: Text(
-                    widget.model.schools[index].name,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge!
-                        .copyWith(color: colors(context).textLink),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                    ),
+                    title: Text(
+                      widget.model.schools[index].name,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge!
+                          .copyWith(color: colors(context).textLink),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
+                widget.model.schools?.length - 1 != index
+                ? 
+                  Divider(
+                    color: Colors.white,
+                    thickness: 5.0,
+                  )
+                :
+                  Container()
+                ],
               );
             }),
       ),
