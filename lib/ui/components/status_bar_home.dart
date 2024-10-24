@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:pos/app/app.router.dart';
+import 'package:pos/statemanagement/globalstore.dart';
 import 'package:pos/ui/views/school/studentsearch.dart';
 import 'package:square_reader_sdk/reader_sdk.dart';
 // import 'package:square_reader_sdk/reader_sdk.dart';
@@ -14,6 +15,7 @@ import '../../services/main_service.dart';
 import '../../services/square_service.dart';
 import '/themes/main_theme.dart';
 import 'online_indicator.dart';
+import 'package:get/get.dart';
 
 class StatusBarHome extends StatefulWidget {
   const StatusBarHome({
@@ -27,6 +29,8 @@ class StatusBarHome extends StatefulWidget {
 class _StatusBarHomeState extends State<StatusBarHome> {
   final _squareService = locator<SquareService>();
   bool readerIsAuthorized = false;
+  final GlobalStoreController cartController =
+      Get.find<GlobalStoreController>();
 
   @override
   void initState() {
@@ -136,6 +140,9 @@ class _StatusBarHomeState extends State<StatusBarHome> {
                     IconButton(
                       onPressed: () async {
                         await _mainService.logout();
+
+                        cartController.clearGlobalaState();
+
                         _navigationService.navigateTo(Routes.authView);
                       },
                       icon: const Icon(Icons.logout,

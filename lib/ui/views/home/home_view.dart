@@ -436,8 +436,12 @@ class _MenuTileState extends State<MenuTile> {
             children: [
               SizedBox(
                 height: 120.0,
-                child: (widget.model.thumbnail != null)
-                    ? Image.memory(widget.model.thumbnail!, fit: BoxFit.contain)
+                child: (widget.model.thumbnail_path != '')
+                    ? Image.network(
+                        "https://sapphireweb.datanetiix.com/v1${widget.model.thumbnail_path!}",
+                        fit: BoxFit.contain,
+                      )
+                    //  ? Image.memory(widget.model.thumbnail!, fit: BoxFit.contain)
                     : const Icon(Icons.image_not_supported_outlined,
                         size: 80.0, color: Colors.grey),
               ),

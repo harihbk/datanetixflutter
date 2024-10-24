@@ -29,6 +29,32 @@ class GlobalStoreController extends GetxController {
   var onKeyboardEnter = ''.obs;
   final TextEditingController searchController = TextEditingController();
 
+  clearGlobalaState() {
+    // Clear a list
+    StudentItems.clear();
+    categorymenu.clear();
+    cartobx.clear();
+
+// Clear a set
+    selectStudent.clear();
+    menuselectedvar.clear();
+    currentSchool.clear();
+
+// Reset a boolean observable
+    preorder.value = false;
+
+// Reset a map (like carttotal)
+    carttotal.value = {
+      "total": 0.00,
+      "discount": 0.00,
+      "calculatedTotal": 0.00,
+      "balance": 0.00
+    };
+
+// Clear a string observable
+    // onKeyboardEnter.value = '';
+  }
+
   studentput(dynamic students) {
     StudentItems.assignAll(students);
     return true;
@@ -127,11 +153,11 @@ class GlobalStoreController extends GetxController {
     return true;
   }
 
-  @override
-  void onClose() {
-    searchController.dispose(); // Dispose the controller when not in use
-    super.onClose();
-  }
+  // @override
+  // void onClose() {
+  //   searchController.dispose(); // Dispose the controller when not in use
+  //   super.onClose();
+  // }
 
   onSearch(value) {
     onKeyboardEnter.value = value;
