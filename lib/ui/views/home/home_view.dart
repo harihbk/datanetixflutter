@@ -666,9 +666,6 @@ class _CartState extends State<Cart> {
   }
 
   pay({required bool charge}) async {
-    print('------tttt------');
-
-    print('------tttt------');
     // if (cartControllerclone.cartobx.isEmpty) {
     if (cartController.carttotal['total'] == 0.00) {
       await _dialogService.showCustomDialog(
@@ -710,7 +707,7 @@ class _CartState extends State<Cart> {
         );
         return;
       }
-    } else if (cartController.selectStudent.first.preorder.isNotEmpty) {
+    } else if (cartController.preorder.isFalse) {
       var confirm = await _dialogService.showCustomDialog(
         variant: DialogType.confirm,
         title: 'Balance Transaction',
@@ -883,9 +880,9 @@ class _CartState extends State<Cart> {
           const SizedBox(height: 10.0),
           TextButton(
             onPressed: () {
-              if (studentsSet.first.preorder == false) {
-                pay(charge: false);
-              }
+              // if (studentsSet.first.preorder == false) {
+              pay(charge: false);
+              //  }
             },
             style: TextButton.styleFrom(
               fixedSize: Size(
