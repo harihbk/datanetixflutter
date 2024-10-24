@@ -12,8 +12,12 @@ import '/models/menu_item.dart';
 import '/models/student_item.dart';
 import '/models/user_item.dart';
 import '/globals/settings.dart';
+import 'package:get/get.dart';
 
 class MainService {
+  final GlobalStoreController cartController =
+      Get.find<GlobalStoreController>();
+
   String? token;
   late DateTime? _tokenExpireTime;
 
@@ -54,6 +58,17 @@ class MainService {
     students.clear();
     menu.clear();
     categories.clear();
+
+    cartController.StudentItems.clear();
+    cartController.cartobx.clear();
+    cartController.carttotal = {
+      "total": 0.00,
+      "discount": 0.00,
+      "calculatedTotal": 0.00,
+      "balance": 0.00
+    } as RxMap<String, dynamic>;
+    cartController.currentSchool.clear();
+    cartController.menuselectedvar.clear();
   }
 
   Future<String> getAccessToken() async {

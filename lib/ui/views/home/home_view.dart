@@ -647,9 +647,7 @@ class _CartState extends State<Cart> {
     // totaldiscountobx = cartController.carttotal;
   }
 
-  pay(
-      {required bool charge,
-      required GlobalStoreController cartControllerclone}) async {
+  pay({required bool charge}) async {
     print('------tttt------');
     print(cartControllerclone.carttotal);
     print('------tttt------');
@@ -843,7 +841,7 @@ class _CartState extends State<Cart> {
           TextButton(
             onPressed: () {
               if (studentsSet.first.preorder.isEmpty) {
-                pay(charge: true, cartControllerclone: _cartController);
+                pay(charge: true);
               }
             },
             style: TextButton.styleFrom(
@@ -868,7 +866,7 @@ class _CartState extends State<Cart> {
           TextButton(
             onPressed: () {
               if (studentsSet.first.preorder == false) {
-                pay(charge: false, cartControllerclone: _cartController);
+                pay(charge: false);
               }
             },
             style: TextButton.styleFrom(
