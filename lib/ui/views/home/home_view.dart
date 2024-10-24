@@ -391,7 +391,9 @@ class _MenuViewState extends State<MenuView> {
                     childAspectRatio: 0.60,
                   ),
                 )
-              : Center(child: Text("Please Select a Student to Continue")));
+              : Center(
+                  child: Text(
+                      "Please search for a student and select\n/choose the student to check their menu")));
         }));
   }
 }
