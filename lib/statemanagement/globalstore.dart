@@ -60,6 +60,7 @@ class GlobalStoreController extends GetxController {
     selectStudent.add(student);
     carttotal['balance'] = student.balance;
     cartobx.clear();
+    clearCart();
     update();
 
     return true;
