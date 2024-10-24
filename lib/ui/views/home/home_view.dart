@@ -308,6 +308,7 @@ class _MenuViewState extends State<MenuView> {
 
     ever(cartController.onKeyboardEnter, (callback) {
       filterProducts();
+      print('--12-3333');
     });
   }
 
@@ -355,18 +356,18 @@ class _MenuViewState extends State<MenuView> {
         : '';
 
     String searchTerm = cartController.searchController.text;
-    if (cartController.menuselectedvar.isNotEmpty) {
-      setState(() {
-        filteredProducts = products.where((item) {
-          bool matchesCategory = selectedCategory.isEmpty ||
-              selectedCategory == "All Items" ||
-              item.category == selectedCategory;
-          bool matchesSearchTerm = searchTerm.isEmpty ||
-              item.name.toLowerCase().contains(searchTerm.toLowerCase());
-          return matchesCategory && matchesSearchTerm;
-        }).toList();
-      });
-    }
+    // if (cartController.menuselectedvar.isNotEmpty) {
+    setState(() {
+      filteredProducts = products.where((item) {
+        bool matchesCategory = selectedCategory.isEmpty ||
+            selectedCategory == "All Items" ||
+            item.category == selectedCategory;
+        bool matchesSearchTerm = searchTerm.isEmpty ||
+            item.name.toLowerCase().contains(searchTerm.toLowerCase());
+        return matchesCategory && matchesSearchTerm;
+      }).toList();
+    });
+    //  }
   }
 
   @override
