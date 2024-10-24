@@ -36,15 +36,15 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
   }
 
-  @override
+  //@override
   // void dispose() {
   //   super.dispose();
   // }
 
-  void dispose() {
-    super.dispose();
-    cartController.clearGlobalaState();
-  }
+  // void dispose() {
+  //   super.dispose();
+  //   cartController.clearGlobalaState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -169,23 +169,28 @@ class _MenuCategoriesState extends State<MenuCategories> {
   final GlobalStoreController cartController =
       Get.find<GlobalStoreController>();
 
-  List<CategoryItem> tabs = [];
+  // List<CategoryItem> tabs = [];
 
   @override
   initState() {
     super.initState();
     // getCategoryh();
-    try {
-      if (mounted) {
-        setState(() {
-          List<CategoryItem> dd = cartController.categorymenu.value;
+    // try {
+    //   if (mounted) {
+    //     setState(() {
+    //       List<CategoryItem> dd = cartController.categorymenu.value;
 
-          tabs = dd as List<CategoryItem>;
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
+    //       tabs = dd as List<CategoryItem>;
+    //     });
+    //   }
+    // } catch (e) {
+    //   print(e);
+    // }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   // Future getCategoryh() async {
@@ -197,67 +202,67 @@ class _MenuCategoriesState extends State<MenuCategories> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: tabs.isEmpty
-          ? Row(
-              children:
-                  List.generate(3, (index) => buildSkeleton(widget.height)))
-          : Row(
-              children: [
-                for (CategoryItem cat in tabs)
-                  Row(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            tabs.forEach((user) {
-                              user.selected = false; // Increment the age by 1
-                            });
-                            var t =
-                                tabs.firstWhere((user) => user.id == cat.id);
-                            t.selected = true;
-                            cartController.menuselected(t);
+    return Obx(() {
+      final tabs = cartController.categorymenu;
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            for (CategoryItem cat in tabs)
+              Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      if (mounted) {
+                        setState(() {
+                          cartController.menuselectedvar.clear();
+                          tabs.forEach((user) {
+                            user.selected = false;
                           });
-                        },
-                        child: Container(
-                          height: widget.height,
-                          width: 170.0,
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: cat.selected
-                                    ? Colors.black
-                                    : Colors.transparent,
-                                width: 2.0,
-                              ),
-                            ),
-                          ),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Center(
-                              child: Text(
-                                cat.name,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: cat.selected
-                                      ? FontWeight.bold
-                                      : FontWeight.normal,
-                                  fontSize: 17.0,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
+                          var t = tabs.firstWhere((user) => user.id == cat.id);
+                          t.selected = true;
+                          cartController.menuselected(t);
+                        });
+                      }
+                    },
+                    child: Container(
+                      height: widget.height,
+                      width: 170.0,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: cat.selected
+                                ? Colors.black
+                                : Colors.transparent,
+                            width: 2.0,
                           ),
                         ),
                       ),
-                    ],
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Center(
+                          child: Text(
+                            cat.name,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: cat.selected
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                              fontSize: 17.0,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-              ],
-            ),
-    );
+                ],
+              ),
+          ],
+        ),
+      );
+    });
   }
 }
 
@@ -288,6 +293,10 @@ class _MenuViewState extends State<MenuView> {
   final _mainService = locator<MainService>();
   final GlobalStoreController cartController =
       Get.find<GlobalStoreController>();
+
+  late Function menuselectedvarListener;
+  late Function onKeyboardEnterListener;
+
   List<MenuItem> filteredProducts = [];
   List<MenuItem> products = [];
   bool _isLoading = true;
@@ -298,7 +307,7 @@ class _MenuViewState extends State<MenuView> {
 
     getMenuh();
 
-    ever(cartController.menuselectedvar, (callback) {
+    menuselectedvarListener = ever(cartController.menuselectedvar, (callback) {
       if (cartController.menuselectedvar.isNotEmpty) {
         filterProducts();
       } else {
@@ -306,9 +315,8 @@ class _MenuViewState extends State<MenuView> {
       }
     });
 
-    ever(cartController.onKeyboardEnter, (callback) {
+    onKeyboardEnterListener = ever(cartController.onKeyboardEnter, (callback) {
       filterProducts();
-      print('--12-3333');
     });
   }
 
@@ -333,7 +341,7 @@ class _MenuViewState extends State<MenuView> {
 
   Future getMenuh() async {
     setState(() {
-      _isLoading = true; // Show loading indicator
+      _isLoading = true;
     });
     try {
       final productlist = await _mainService.getMenuClone();
@@ -357,17 +365,30 @@ class _MenuViewState extends State<MenuView> {
 
     String searchTerm = cartController.searchController.text;
     // if (cartController.menuselectedvar.isNotEmpty) {
-    setState(() {
-      filteredProducts = products.where((item) {
-        bool matchesCategory = selectedCategory.isEmpty ||
-            selectedCategory == "All Items" ||
-            item.category == selectedCategory;
-        bool matchesSearchTerm = searchTerm.isEmpty ||
-            item.name.toLowerCase().contains(searchTerm.toLowerCase());
-        return matchesCategory && matchesSearchTerm;
-      }).toList();
-    });
+    if (mounted) {
+      setState(() {
+        filteredProducts = products.where((item) {
+          bool matchesCategory = selectedCategory.isEmpty ||
+              selectedCategory == "All Items" ||
+              item.category == selectedCategory;
+          bool matchesSearchTerm = searchTerm.isEmpty ||
+              item.name.toLowerCase().contains(searchTerm.toLowerCase());
+          return matchesCategory && matchesSearchTerm;
+        }).toList();
+      });
+    }
+
     //  }
+  }
+
+  @override
+  void dispose() {
+    // Dispose of the ever listeners
+    // Unsubscribe the listeners
+    menuselectedvarListener();
+    onKeyboardEnterListener();
+
+    super.dispose(); // Call the super dispose method
   }
 
   @override

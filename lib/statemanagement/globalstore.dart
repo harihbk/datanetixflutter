@@ -36,7 +36,7 @@ class GlobalStoreController extends GetxController {
     cartobx.clear();
 
     selectStudent.clear();
-    // menuselectedvar.clear();
+    menuselectedvar.clear();
     currentSchool.clear();
 
     preorder.value = false;
@@ -48,6 +48,8 @@ class GlobalStoreController extends GetxController {
       "calculatedTotal": 0.00,
       "balance": 0.00
     };
+    update();
+    return true;
   }
 
   studentput(dynamic students) {
@@ -81,6 +83,9 @@ class GlobalStoreController extends GetxController {
 
   menuselected(CategoryItem data) {
     menuselectedvar.clear();
+    print('---mmmm---');
+    print(data);
+    print('-----menu----');
     menuselectedvar.add(data);
     update();
     return true;

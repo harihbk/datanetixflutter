@@ -326,9 +326,9 @@ class HomeViewModel extends BaseViewModel {
     clearCart();
   }
 
-  @override
-  void dispose() {
-    searchController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   searchController.dispose();
+  //   super.dispose();
+  // }
 }

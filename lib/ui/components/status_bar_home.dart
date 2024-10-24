@@ -142,8 +142,11 @@ class _StatusBarHomeState extends State<StatusBarHome> {
                       onPressed: () async {
                         //await _mainService.logout();
 
-                        cartController.clearGlobalaState();
-                        Get.offAll(const AuthView());
+                        await cartController.clearGlobalaState();
+                        // Get.offAll(const AuthView());
+                        Navigator.of(context)
+                            .pushNamedAndRemoveUntil('/', (route) => false);
+                        //  Get.offAll(() => AuthView());
 
                         //_navigationService.navigateTo(Routes.authView);
                       },
