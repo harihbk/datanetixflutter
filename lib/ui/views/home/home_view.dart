@@ -649,7 +649,7 @@ class _CartState extends State<Cart> {
 
   pay({required bool charge}) async {
     print('------tttt------');
-    print(cartControllerclone.carttotal);
+
     print('------tttt------');
     // if (cartControllerclone.cartobx.isEmpty) {
     if (cartController.carttotal['total'] == 0.00) {
