@@ -37,8 +37,13 @@ class _HomeViewState extends State<HomeView> {
   }
 
   @override
+  // void dispose() {
+  //   super.dispose();
+  // }
+
   void dispose() {
     super.dispose();
+    cartController.clearGlobalaState();
   }
 
   @override
@@ -170,10 +175,17 @@ class _MenuCategoriesState extends State<MenuCategories> {
   initState() {
     super.initState();
     // getCategoryh();
-    List<CategoryItem> dd = cartController.categorymenu.value;
-    setState(() {
-      tabs = dd as List<CategoryItem>;
-    });
+    try {
+      if (mounted) {
+        setState(() {
+          List<CategoryItem> dd = cartController.categorymenu.value;
+
+          tabs = dd as List<CategoryItem>;
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   // Future getCategoryh() async {
@@ -341,18 +353,20 @@ class _MenuViewState extends State<MenuView> {
     String selectedCategory = cartController.menuselectedvar.isNotEmpty
         ? cartController.menuselectedvar.first.name
         : '';
-    String searchTerm = cartController.searchController.text;
 
-    setState(() {
-      filteredProducts = products.where((item) {
-        bool matchesCategory = selectedCategory.isEmpty ||
-            selectedCategory == "All Items" ||
-            item.category == selectedCategory;
-        bool matchesSearchTerm = searchTerm.isEmpty ||
-            item.name.toLowerCase().contains(searchTerm.toLowerCase());
-        return matchesCategory && matchesSearchTerm;
-      }).toList();
-    });
+    String searchTerm = cartController.searchController.text;
+    if (cartController.menuselectedvar.isNotEmpty) {
+      setState(() {
+        filteredProducts = products.where((item) {
+          bool matchesCategory = selectedCategory.isEmpty ||
+              selectedCategory == "All Items" ||
+              item.category == selectedCategory;
+          bool matchesSearchTerm = searchTerm.isEmpty ||
+              item.name.toLowerCase().contains(searchTerm.toLowerCase());
+          return matchesCategory && matchesSearchTerm;
+        }).toList();
+      });
+    }
   }
 
   @override

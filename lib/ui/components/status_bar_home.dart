@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:pos/app/app.router.dart';
 import 'package:pos/statemanagement/globalstore.dart';
+import 'package:pos/ui/views/auth/auth_view.dart';
 import 'package:pos/ui/views/school/studentsearch.dart';
 import 'package:square_reader_sdk/reader_sdk.dart';
 // import 'package:square_reader_sdk/reader_sdk.dart';
@@ -139,11 +140,12 @@ class _StatusBarHomeState extends State<StatusBarHome> {
                     const SizedBox(width: 10.0),
                     IconButton(
                       onPressed: () async {
-                        await _mainService.logout();
+                        //await _mainService.logout();
 
                         cartController.clearGlobalaState();
+                        Get.offAll(const AuthView());
 
-                        _navigationService.navigateTo(Routes.authView);
+                        //_navigationService.navigateTo(Routes.authView);
                       },
                       icon: const Icon(Icons.logout,
                           color: Colors.white, size: 20.0),

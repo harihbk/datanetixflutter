@@ -30,17 +30,15 @@ class GlobalStoreController extends GetxController {
   final TextEditingController searchController = TextEditingController();
 
   clearGlobalaState() {
-    // Clear a list
+    // if (Get.isRegistered<GlobalStoreController>()) {
     StudentItems.clear();
     categorymenu.clear();
     cartobx.clear();
 
-// Clear a set
     selectStudent.clear();
-    menuselectedvar.clear();
+    // menuselectedvar.clear();
     currentSchool.clear();
 
-// Reset a boolean observable
     preorder.value = false;
 
 // Reset a map (like carttotal)
@@ -50,9 +48,6 @@ class GlobalStoreController extends GetxController {
       "calculatedTotal": 0.00,
       "balance": 0.00
     };
-
-// Clear a string observable
-    // onKeyboardEnter.value = '';
   }
 
   studentput(dynamic students) {
